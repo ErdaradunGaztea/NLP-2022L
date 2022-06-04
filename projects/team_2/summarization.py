@@ -59,5 +59,5 @@ def summarize(sentences: list[str], model: SentenceTransformer, n_iter: int=5000
     # here we run PSO on these embeddings
     pso: PSO = PSO(n_particles=50, similarities=(similarity_matrix, similarity__to_all), length=length, capacity=capacity)
     # in return we get 0-1 array indicating chosen sentences, which we then join to one string summarization
-    optimum: np.ndarray = pso.optimize(n_iter)
+    optimum: np.ndarray = pso.optimize(n_iter, 100)
     return '. '.join([sentences[i] for i in np.where(optimum==1)[0]])

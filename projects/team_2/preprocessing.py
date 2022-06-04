@@ -5,7 +5,7 @@ import string
 from pathlib import Path
 from typing import Union
 import nltk
-nltk.download('stopwords')
+# nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
 

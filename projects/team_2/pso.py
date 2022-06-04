@@ -41,6 +41,16 @@ class PSO:
         Returns:
             float: opposite of quality of solution x (the lower the better)
         """
+        # # similarity_matrix holds similarities of sentences between each other
+        # similarity_matrix: np.ndarray = similarities[0]
+        # # similarity_to_all holds similarities of sentences to the whole article
+        # similarity_to_all = np.sum(similarities[1] * x, dtype=np.float64)
+        # # depending on chosen subset of sentences x we create a mask to zero out similarities that we don't want to count
+        # x_triangle: np.ndarray = (np.array(x).reshape(-1, 1) @ np.array(x).reshape(1, -1))
+        # x_triangle[np.tril_indices(len(x))] = 0
+        # total_similarity = similarity_to_all - np.sum(similarity_matrix * x_triangle)
+        # return - (total_similarity - (capacity * np.max([0, np.sum(x) - length])))
+
         # similarity_matrix holds similarities of sentences between each other
         similarity_matrix: np.ndarray = similarities[0]
         # similarity_to_all holds similarities of sentences to the whole article
@@ -49,7 +59,7 @@ class PSO:
         # depending on chosen subset of sentences x we create a mask to zero out similarities that we don't want to count
         x_triangle: np.ndarray = (np.array(x).reshape(-1, 1) @ np.array(x).reshape(1, -1))
         x_triangle[np.tril_indices(len(x))] = 0
-        return np.sum(sim_all * x_triangle) - (capacity * np.max([0, np.sum(x) - length]))
+        return - (np.sum(sim_all * x_triangle) - (capacity * np.max([0, np.sum(x) - length])))
 
     @staticmethod
     def _constriction(phi: float) -> float:
@@ -71,11 +81,11 @@ class PSO:
         scores: List[float] = [PSO._target_function(x, self.similarities, self.length, self.capacity) for x in self.position]
         for i, score in enumerate(scores):
             # updating personal best
-            if score > self.pbest_score[i]:
+            if score < self.pbest_score[i]:
                 self.pbest_score[i] = score
                 self.pbest[i] = self.position[i].copy()
             # updating global best
-            if score > self.gbest_score:
+            if score < self.gbest_score:
                 self.gbest_score = score
                 self.gbest = self.position[i].copy()
 
@@ -127,6 +137,7 @@ class PSO:
         for _ in range(n_iter):
             # early stopping if PSO converged
             if early_stopping > 0 and len(previous_best) >= early_stopping and previous_best[-early_stopping] == previous_best[-1]:
+                # print(previous_best)
                 break
 
             self._update_best()

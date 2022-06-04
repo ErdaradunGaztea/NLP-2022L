@@ -63,12 +63,24 @@ def run_and_save(n_iter: int=250, length: int=4, capacity: float=.1, model: Sent
 
 if __name__ == '__main__':
     # grid search along parameters
-    capacities = np.arange(0.1, 1, 0.2)
-    models = ['all-MiniLM-L6-v2', 'all-MiniLM-L12-v2', 'all-distilroberta-v1', 'all-mpnet-base-v2']
-    for model_name in models:
-        model = SentenceTransformer(model_name)
-        for capacity in capacities:
-            run_and_save(capacity=capacity,
-                         model=model,
-                         summary_path=f"summaries/summary_{int(capacity*100)}_{model_name}",
-                         targets_path="targets")
+    # capacities = np.arange(0.1, 1, 0.2)
+    # models = ['all-MiniLM-L6-v2', 'all-MiniLM-L12-v2', 'all-distilroberta-v1', 'all-mpnet-base-v2']
+    # for model_name in models:
+    #     model = SentenceTransformer(model_name)
+    #     for capacity in capacities:
+    #         run_and_save(capacity=capacity,
+    #                      model=model,
+    #                      summary_path=f"summaries/summary_{int(capacity*100)}_{model_name}",
+    #                      targets_path="targets")
+
+    capacity = 100
+    model_name = 'all-MiniLM-L6-v2'
+    model = SentenceTransformer(model_name)
+    np.random.seed(123)
+    random.seed(123)
+    run_and_save(capacity=capacity,
+                 model=model,
+                 n_iter=1000,
+                 subset_size=1000,
+                 summary_path=f"summaries/summary_{int(capacity * 100)}_{model_name}",
+                 targets_path="targets")
