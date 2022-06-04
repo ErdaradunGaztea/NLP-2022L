@@ -49,7 +49,7 @@ class PSO:
         # depending on chosen subset of sentences x we create a mask to zero out similarities that we don't want to count
         x_triangle: np.ndarray = (np.array(x).reshape(-1, 1) @ np.array(x).reshape(1, -1))
         x_triangle[np.tril_indices(len(x))] = 0
-        return ((1 - capacity) * np.max([0, np.sum(x_triangle) - length])) - (capacity * np.sum(sim_all * x_triangle))
+        return np.sum(sim_all * x_triangle) - (capacity * np.max([0, np.sum(x) - length]))
 
     @staticmethod
     def _constriction(phi: float) -> float:
@@ -71,11 +71,11 @@ class PSO:
         scores: List[float] = [PSO._target_function(x, self.similarities, self.length, self.capacity) for x in self.position]
         for i, score in enumerate(scores):
             # updating personal best
-            if score < self.pbest_score[i]:
+            if score > self.pbest_score[i]:
                 self.pbest_score[i] = score
                 self.pbest[i] = self.position[i].copy()
             # updating global best
-            if score < self.gbest_score:
+            if score > self.gbest_score:
                 self.gbest_score = score
                 self.gbest = self.position[i].copy()
 
