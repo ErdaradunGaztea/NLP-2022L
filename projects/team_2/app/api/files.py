@@ -37,7 +37,6 @@ async def homepage(request: Request):
 @router.get("/api/summarize/", response_class=JSONResponse)
 async def summarize_article(article: str):
     sentences = _prepare_text(article)
-    print(sentences)
     summarization = summarize(sentences, model=model, n_iter=250, length=4, capacity=.1)
     return {'summarization': summarization}
 
