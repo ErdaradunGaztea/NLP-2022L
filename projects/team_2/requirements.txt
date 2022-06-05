@@ -9,6 +9,6 @@ wordcloud==1.8.1
 numpy~=1.22.3
 p_tqdm~=1.3.3
 fastapi==0.78.0
-magnum==0.15.0
+mangum==0.15.0
 uvicorn==0.17.6
 python-multipart==0.0.5
