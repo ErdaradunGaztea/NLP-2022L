@@ -15,7 +15,6 @@ function clickHandler() {
 	// button clickHandler will be called
 	var text = inputText.value;
 	var updatedUrl = apiUrl + "api/summarize/?article=" + text;
-	console.log(updatedUrl);
 	fetch(updatedUrl).then(response =>
 	response.json()).then(json =>
 	outputText.innerText =
